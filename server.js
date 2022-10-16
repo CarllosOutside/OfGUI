@@ -4,7 +4,7 @@ const app = express()
 
 app.use('/', 
 express.static(
-    resolve(--dirname,'./build')
+    resolve(__dirname,'./build')
     ))
 
 
