@@ -29,7 +29,7 @@ const AddOrdem = (props) => {
 
     //quando sleecionar um funcionario
     useEffect(() => {
-     //console.log(currentFuncionario.cod_funcionario)
+     //console.log(currentFuncionario.cod_funcionario) 
      //chama a funcao handleInputchange do pai(OrdemList)
      props.handleInputChange({ //envia como argumento um evento com campo target.name e target.value
       target:{
