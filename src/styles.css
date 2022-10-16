@@ -1,0 +1,46 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.drag-handle {
+  width: 100%;
+}
+
+.draggable {
+  /*display: flex;*/
+  width: 100%; /*100% da largura do Drop pai*/
+}
+
+.category-container {
+  width: 200vw;
+  min-height: -webkit-fill-available; /*ocupa toda a tela disponivel*/
+  padding: 0.5vw;
+}
+
+.draggable.dragging .drag-handle {
+}
+
+.draggable.dragging .item {
+}
+
+.droppable {
+  width: 100%; 
+  height: 100%; /*ocupa 100% do category container*/
+}
+
+.droppable.dropping {
+  background: #d1e3e7;
+  background: rgba(152, 236, 232, 0.55);
+  height: 100%;
+  width: 100%;
+}
+.titulo {
+  width: 100%;
+}
+.texto {
+  width: 100%;
+}
+.containerTest {
+  display: flex;
+}
