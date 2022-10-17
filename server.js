@@ -1,19 +1,8 @@
 const express = require('express')
-const {resolve} = require('path');
-
 const app = express()
-app.get('/', function(req, res) {
-    res.sendFile(resolve(__dirname, './build') );
-});
-app.use(express.static(
-    resolve(__dirname, './build') 
-    ));
+const path = require('path')
+const port = process.env.PORT || 3001
 
-app.listen(
-    process.env.PORT || 3000, (err) =>{
-        if(err){return console.log(err)}
+app.use('/', express.static(path.join(__dirname, 'dist')))
 
-        console.log("Okey")
-    }
-)
-
+app.listen(port, () => console.log("Listening on Port", port))
