@@ -252,10 +252,16 @@ useEffect(() => {
               {/**Mapeia cada item */}
               {category.items.map((item, index) => {
                 return (
-                  //Cria elementos draggables 
-                  <Drag key={item.id} id={``+item.id} index={index}>
-                    <Cartao item={item} key={item.id} changeCrud = {changeCrud}/>
-                  </Drag>
+                 <div>
+                  {/**Cria elementos draggables se ordem estiver aberta */}
+                  {item.aberto? //se estiver aberta cria draggable
+                      <Drag key={item.id} id={``+item.id} index={index}>
+                        <Cartao item={item} key={item.id} changeCrud = {changeCrud}/>
+                      </Drag>  
+                    : //senão, cria apenas cartao
+                       <Cartao item={item} key={item.id} changeCrud = {changeCrud}/>
+                  }
+                  </div>
                 );
               })}
             </Drop>

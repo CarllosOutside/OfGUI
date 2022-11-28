@@ -11,17 +11,18 @@ import Button from 'react-bootstrap/Button';
 import OrdemService from "../Services/OrdemService";
 import Form from 'react-bootstrap/Form';
 import { BiWindows } from "react-icons/bi";
-
+import moment from "moment-timezone";
+import CurrencyInput from 'react-currency-input';
 const CadastroDeOrdemCalendario = (props) => {
 
 const navigate = useNavigate()
-
+const [data, setData] = useState(new Date())
   //estado inicial da ordem
   const initialOrdemState = {
     id: null,
     placa: null,
     codFuncionario: null,
-    dataAbertura: null,
+    dataAbertura:  moment.tz(data,"America/Sao_Paulo").format("yyyy-MM-DD"),
     valorTotalPecas: 0,
     valorTotalServicos: 0,
     aberto: true,
@@ -254,28 +255,33 @@ useEffect(()=>{
               value={ordem.dataAbertura}
               onChange={handleInputChange}
               name="dataAbertura"
+              disabled={!ordem.aberto}
             />
           </div>
           <div className="form-group">
-            <label>Valor em peças</label>
-            <input
-              type="text"
-              className="form-control"
-              id="valorTotalPecas"
-              value={ordem.valorTotalPecas}
-              disabled
-              name="valorTotalPecas"
+            <label>Valor total em peças</label>
+            <CurrencyInput 
+            id="valorTotalPecas"
+            value={ordem.valorTotalPecas} 
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$"
+            className="form-control"
+            name="valorTotalPecas"
+            disabled
             />
           </div>
           <div className="form-group">
-            <label>Mão de Obra</label>
-            <input
-              type="text"
-              className="form-control"
-              id="valorTotalMaoObra"
-              value={ordem.valorTotalServicos}
-              disabled
-              name="valorTotalMaoObra"
+            <label>Valor total em mão de Obra</label>
+            <CurrencyInput 
+            id="valorTotalMaoObra"
+            value={ordem.valorTotalServicos} 
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$"
+            className="form-control"
+            name="valorTotalMaoObra"
+            disabled
             />
           </div>
           {(criada)?  //se o veiculo ja foi criado

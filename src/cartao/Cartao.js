@@ -16,6 +16,8 @@ import CadastroDeOrdemCalendario from "../components/CadastroDeOrdemCalendario";
 import ServicoService from "../Services/ServicoService";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import CurrencyInput from 'react-currency-input';
+import '../styles.css'
 
 export const Cartao = (props) => {
 useEffect(()=>{},[props])
@@ -85,10 +87,34 @@ useEffect(()=>{},[props])
       <CardBody style={{ backgroundColor: colorBody}}>
         <Collapse isOpen={collapse}>
           <CardText style={{ fontSize: "1.2vw" }}>
-            <div>Modelo: {item.veiculo.marca+" - "+item.veiculo.modelo}</div>
-            <div>Valor em peças: R$ {item.valorTotalPecas}</div>
-            <div>Valor em mão de obra: R$ {item.valorTotalServicos}</div>
-    <div>Total: R$ {item.valorTotalPecas + item.valorTotalServicos}</div>
+            <table className="tabelaCard" >
+            <tr><td>Cliente:</td><td>{item.veiculo.cliente.pessoa.nome}</td></tr>
+              <tr><td>Modelo:</td><td>{item.veiculo.marca+" - "+item.veiculo.modelo}</td></tr>
+              <tr><td>Valor em peças:</td> <td><CurrencyInput 
+            style={{border:"0px", backgroundColor:"rgba(0, 0, 0, 0)", textAlign:"right"}}
+            value={item.valorTotalPecas} 
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$"
+            disabled
+            /></td></tr>   
+            <tr><td>Valor em mão de obra:</td> <td ><CurrencyInput 
+              style={{border:"0px", backgroundColor:"rgba(0, 0, 0, 0)", textAlign:"right"}}
+            value={item.valorTotalServicos} 
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$"
+            disabled
+            /></td></tr>    
+            <tr><td>Total:</td> <td ><CurrencyInput 
+            style={{border:"0px", backgroundColor:"rgba(0, 0, 0, 0)", textAlign:"right"}}
+            value={item.valorTotalPecas + item.valorTotalServicos} 
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$"
+            disabled
+            /></td></tr>     
+            </table>
           </CardText>
         </Collapse>
 

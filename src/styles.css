@@ -16,17 +16,24 @@
   width: 200vw;
   min-height: -webkit-fill-available; /*ocupa toda a tela disponivel*/
   padding: 0.5vw;
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .draggable.dragging .drag-handle {
 }
 
+.tabelaCard td:nth-child(2){
+
+ text-align: right;
+  
+}
 .draggable.dragging .item {
 }
 
 .droppable {
   width: 100%; 
   height: 100%; /*ocupa 100% do category container*/
+  
 }
 
 .droppable.dropping {

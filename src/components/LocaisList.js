@@ -286,7 +286,7 @@ const LocaisList = (props) => {
               className="rounded me-2"
               alt=""
             />
-            <strong className="me-auto">{docInvalido} inválido</strong>
+            <strong className="me-auto">{docInvalido} inválido ou já cadastrado</strong>
           </Toast.Header>
           <Toast.Body>Insira um {docInvalido} válido</Toast.Body>
         </Toast></ToastContainer>

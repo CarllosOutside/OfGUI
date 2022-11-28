@@ -28,6 +28,7 @@ const Addpessoa = (props) => {
   //Se o pai tiver recebido um cliente na pathvariable, carrega a pessoa desse cliente      
   const [pessoa, setPessoa] = useState(initialPessoaState);
   const [tipo, setTipo] = useState("---")
+  const [initialDocumento, setInitialDocumento] = useState()
   const [documento, setDocumento] = useState()
   useEffect(() => {  
     if(props.cliente) {
@@ -50,6 +51,7 @@ const Addpessoa = (props) => {
       FisicaService.findByPessoa(props.cliente? props.cliente.pessoa.cod_pessoa: props.funcionario.pessoa.cod_pessoa)
         .then(response => {
           const {cpf} = response.data;
+          setInitialDocumento(cpf)
           setDocumento(cpf)
           setTipo("fisica")
           console.log(response.data);
@@ -62,6 +64,7 @@ const Addpessoa = (props) => {
         .then(response => {
           const {cnpj} = response.data;
           setDocumento(cnpj)
+          setInitialDocumento(cnpj)
           setTipo("juridica")
           console.log(response.data);
         })
@@ -190,8 +193,8 @@ const changeDocumento = (event)=>{
           {tipo!="---"?
           <div>
             {tipo =="juridica"?
-              <AddJuridica changeHandler={changeDocumento} doc={documento}/>:
-              <AddFisica changeHandler={changeDocumento} doc={documento}/>
+              <AddJuridica changeHandler={changeDocumento} doc={documento} initialDoc={initialDocumento}/>:
+              <AddFisica changeHandler={changeDocumento} doc={documento} initialDoc={initialDocumento}/>
           }
           </div>
           :<></>}
@@ -212,7 +215,7 @@ const changeDocumento = (event)=>{
                       placement={"top"}
                        overlay={
                           <Tooltip id={`tooltip-${"del"}`}>
-                            <strong>{"Adicionar veículos"}</strong>.
+                            <strong>{"Veículos"}</strong>.
                           </Tooltip>
                         }> 
                       <FontAwesomeIcon icon={faCar}/>
@@ -227,7 +230,7 @@ const changeDocumento = (event)=>{
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Cadastro de veículos
+            Veículos do cliente
           </Modal.Title>
         </Modal.Header>
         <Modal.Body><VeiculosList codCliente = {props.cliente.cod_cliente}/></Modal.Body>

@@ -14,6 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import AddOrdem from './AddOrdem';
 import { getDropdownMenuPlacement } from "react-bootstrap/esm/DropdownMenu";
 import ServicoService from  "../Services/ServicoService";
+import moment from "moment-timezone";
 library.add(faPenToSquare, faTrashCan, faPlus);
 
 const OrdemList = (props) => {
@@ -29,12 +30,12 @@ const OrdemList = (props) => {
   const [count, setCount] = useState(0); 
   const [pageSize, setPageSize] = useState(3); //3 itens por pag
   const pageSizes = [3, 6, 9]; //itens por pagina opcoes
-
+  const [data, setData] = useState(new Date())
   const initialOrdemState =
     {
         placa: "",
         codFuncionario: null,
-        dataAbertura: "",
+        dataAbertura: moment.tz(data,"America/Sao_Paulo").format("yyyy-MM-DD"),
         valorTotalServicos: 0,
         valorTotalPecas: 0,
         aberto: true,
@@ -322,7 +323,7 @@ console.log(response)
 
   return (
     <div className="list row" style={{paddingLeft: "0rem"}}>
-      <h3 align="center">Ordens</h3><br/><br/><br/><br/>
+      <h3 align="center">Gerencie as ordens de serviço do veículo</h3><br/><br/><br/><br/>
       <div className="col-md-8">
       </div>
       <div className="col-md-12 list">
@@ -387,7 +388,7 @@ console.log(response)
 
       <Modal show={show} onHide={handleClose} fullscreen>
         <Modal.Header closeButton>
-          <Modal.Title>Cadastro de Ordens</Modal.Title>
+          <Modal.Title>{ordemCriada? "Editar Ordem e Serviços": "Cadastro de Ordem de serviços"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
          <AddOrdem ordem={ordem} veiculo={props.veiculo} handleInputChange = {handleInputChange} criada={ordemCriada} submitted={submitted} setSubmitted={setSubmitted}

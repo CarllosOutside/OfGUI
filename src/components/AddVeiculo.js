@@ -3,17 +3,59 @@ import { useParams, useNavigate } from "react-router-dom";
 import VeiculoService from "../Services/VeiculoService";
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
+import Dropdown from 'react-bootstrap/Dropdown';
+import ClienteService from "../Services/ClienteService";
 const AddVeiculo = (props) => {
     const {id} = useParams() //id do cliente na path variable
+    const [dropDown, setDropDown] = useState(false)
+    const toggleDrop = () =>{
+      setDropDown(!dropDown)
+      //console.log(dropDown)
+    }
+    const [currentCliente, setCurrentCliente] = useState()
+    //carrega lista de clientes
+    useEffect(() => {
+      retrieveClientes(); //lista de clientes disponiveis
+      setCurrentCliente(props.veiculo.cliente)
+    }, []);
 
-useEffect(()=>{
-}, [props])
+//lista de clientes
+const [clientes, setClientes] = useState([])
+
+
+
+
+//pega lista ed clientes
+const retrieveClientes = () => {
+  ClienteService.getLista()
+    .then(response => {
+      setClientes(response.data);
+      console.log(response.data);
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
+// faz nada
+const faznada = () =>{}
+
 const desabilitar = () =>{
     if(!props.criado) //se o veiculo ainda nao foi criado, desabilita preencher os dados, permitindo so placa
         return "true" //desabilita entradas que nao sao placa
     else //se ja houver encontrado
         return "" //permite editar
 }
+
+useEffect(() => {
+  //chama a funcao handleInputchange do pai
+  props.handleInputChange({ //envia como argumento um evento com campo target.name e target.value
+   target:{
+     name:"cliente",
+     value: currentCliente
+   }
+ })
+ }, [currentCliente]); 
+
   return (
     <div className="submit-form">
       <div>
@@ -87,6 +129,26 @@ const desabilitar = () =>{
               name="cor"
             />
           </div>
+          <div>
+           <label>Selecionar novo dono do veiculo:</label>
+    <Dropdown isOpen={dropDown} toggle={toggleDrop}>
+        <Dropdown.Toggle caret>
+         {(props.veiculo.cliente)? props.veiculo.cliente.pessoa.nome: "Selecione dono"}
+        </Dropdown.Toggle>
+         <Dropdown.Menu container="body">
+            {clientes &&
+            clientes.map((cli, index) => (
+              <Dropdown.Item
+                onClick={cli!=currentCliente?() => setCurrentCliente(cli): ()=>faznada}
+                key={index}
+                name="codCliente"
+              >
+                {cli.pessoa.nome}
+              </Dropdown.Item>
+            ))}
+         </Dropdown.Menu>
+      </Dropdown>
+    </div>
           <br/>
         <br/>
         </div>

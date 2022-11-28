@@ -27,7 +27,9 @@ const removeAll = () => {
 const findByNome = nome => {
   return http.get(`/clientes?nome=${nome}`);
 };
-
+const getLista = () =>{
+  return http.get(`/clientes/lista`);
+}
 const ClienteService = {
   getAll,
   get,
@@ -35,7 +37,8 @@ const ClienteService = {
   update,
   remove,
   removeAll,
-  findByNome
+  findByNome,
+  getLista
 };
 
 export default ClienteService;

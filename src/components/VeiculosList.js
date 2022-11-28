@@ -287,7 +287,7 @@ const [veiculoCriado, setVeiculoCriado] = useState(false);
   };
 const updateVeiculo = () =>{
     var data = veiculo
-
+    console.log(data)
     VeiculoService.update(data.placa, data)
     .then(response => {
       setVeiculo({
@@ -314,9 +314,18 @@ const handleInputChange = event => {
   setVeiculo({ ...veiculo, [name]: value });
   //console.log(value)
 };
+
+useEffect(() => {
+  if(veiculo.cliente){
+    console.log(veiculo.cliente.cod_cliente)
+  setVeiculo({ ...veiculo, codCliente: veiculo.cliente.cod_cliente });
+  console.log(veiculo.codCliente)
+  }
+ }, [veiculo.cliente]); 
+
   return (
     <div className="list row" style={{paddingLeft: "0rem"}}>
-      <h3 align="center">Veículos do Cliente</h3><br/><br/><br/><br/>
+      <h3 align="center">Busque ou cadastre veículos do cliente</h3><br/><br/><br/><br/>
       <h4>Procurar Veículo</h4>
       <div className="col-md-8">
         <div className="input-group mb-3">
@@ -396,7 +405,7 @@ const handleInputChange = event => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Cadastro de Veículos</Modal.Title>
+          <Modal.Title>{veiculoCriado?"Editar veículo":"Cadastrar novo veículo"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
          <AddVeiculo veiculo ={veiculo} handleInputChange = {handleInputChange} criado={veiculoCriado} submitted={submitted} setSubmitted={setSubmitted}/>
@@ -407,7 +416,7 @@ const handleInputChange = event => {
           </Button>
           <Button variant="primary" onClick={veiculoCriado?updateVeiculo: saveVeiculo}>
             Salvar
-          </Button>
+          </Button> 
         </Modal.Footer>
       </Modal>
 

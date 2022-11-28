@@ -13,7 +13,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import AddServico from './AddServico';
 import OrdemList from './OrdemList';
-
+import CurrencyInput from 'react-currency-input';
 library.add(faPenToSquare, faTrashCan, faPlus);
 
 const ServicoList = (props) => {

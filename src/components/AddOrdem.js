@@ -8,7 +8,7 @@ import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import ServicoList from "./ServicoList";
 import Form from 'react-bootstrap/Form';
-
+import CurrencyInput from 'react-currency-input';
 
 const AddOrdem = (props) => {
     const {id} = useParams() //id do cliente na path variable
@@ -77,10 +77,10 @@ const toggleDrop = () =>{
 const [teste, setTeste] =  useState(true)
 
 
-  return (
+  return ( 
     <div className="submit-form">
       <div>
-      <h3 align="center">Ordem de Serviço</h3>
+      <h3 align="center">{(props.criada)?"Gerenciar ordem e serviços ":"Cadastrar nova ordem de serviços"}</h3>
         {(props.criada)?  //se o veiculo ja foi criado, desabilita a funcao de escrever placa
         <div className="form-group">
             <label>Código da ordem</label>
@@ -151,28 +151,33 @@ const [teste, setTeste] =  useState(true)
               value={props.ordem.dataAbertura}
               onChange={props.handleInputChange}
               name="dataAbertura"
+              disabled={!props.ordem.aberto}
             />
           </div>
           <div className="form-group">
-            <label>Valor em peças</label>
-            <input
-              type="text"
-              className="form-control"
-              id="valorTotalPecas"
-              value={props.ordem.valorTotalPecas}
-              disabled
-              name="valorTotalPecas"
+            <label>Valor total em peças</label>
+            <CurrencyInput 
+            id="valorTotalPecas"
+            value={props.ordem.valorTotalPecas} 
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$"
+            className="form-control"
+            name="valorTotalPecas"
+            disabled
             />
           </div>
           <div className="form-group">
-            <label>Mão de Obra</label>
-            <input
-              type="text"
-              className="form-control"
-              id="valorTotalMaoObra"
-              value={props.ordem.valorTotalServicos}
-              disabled
-              name="valorTotalMaoObra"
+            <label>Valor total em mão de Obra</label>
+            <CurrencyInput 
+            id="valorTotalMaoObra"
+            value={props.ordem.valorTotalServicos} 
+            decimalSeparator="," 
+            thousandSeparator="."
+            prefix="R$"
+            className="form-control"
+            name="valorTotalMaoObra"
+            disabled
             />
           </div>
           {(props.criada)?  //se o veiculo ja foi criado
@@ -219,7 +224,7 @@ const [teste, setTeste] =  useState(true)
             <strong className="me-auto">Ordem salva</strong>
             <small>...</small>
           </Toast.Header>
-          <Toast.Body>ordem de serviço salva com sucesso</Toast.Body>
+          <Toast.Body>ordem de serviços salva com sucesso</Toast.Body>
         </Toast>
         </ToastContainer>
     </div>
