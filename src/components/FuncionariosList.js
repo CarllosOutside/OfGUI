@@ -203,15 +203,15 @@ const FuncionariosList = (props) => {
 
   return (
     <div className="list row" style={{paddingLeft:"50px", paddingTop:"30px",width:"95%"}}>
-      <h3 align="center">Funcionários</h3><br/><br/><br/>
+      <h3 align="center">Colaboradores</h3><br/><br/><br/>
       <hr/>
-      <h4>Procurar Funcionário</h4>
+      <h4>Procurar Colaborador</h4>
       <div className="col-md-8">
         <div className="input-group mb-3">
           <input
             type="text"
             className="form-control"
-            placeholder="Nome do cliente"
+            placeholder="Nome do colaborador"
             value={searchNome}
             onChange={onChangeSearchNome}
           />
@@ -250,7 +250,7 @@ const FuncionariosList = (props) => {
             onChange={handlePageChange} //altera a pagina(indice) e dispara nova busca na api
           /></div>
           <div style={{flex:"20%"}}>
-          <button onClick={telaCadastro} className="btn btn-primary" style={{height:"auto"}}>Cadastrar funcionário</button>
+          <button onClick={telaCadastro} className="btn btn-primary" style={{height:"auto"}}>Cadastrar colaborador</button>
           </div>
           </div>
         <table

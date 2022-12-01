@@ -51,7 +51,7 @@ useEffect(() => {
   props.handleInputChange({ //envia como argumento um evento com campo target.name e target.value
    target:{
      name:"cliente",
-     value: currentCliente
+     value: currentCliente 
    }
  })
  }, [currentCliente]); 

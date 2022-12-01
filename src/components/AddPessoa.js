@@ -110,7 +110,7 @@ const changeDocumento = (event)=>{
       <div>
         {props.cliente?
         <h4>Cadastro de Clientes</h4>
-        :<h4>Cadastro de funcionários</h4>
+        :<h4>Cadastro de colaboradores</h4>
       }
       <hr/>
         {pessoa.cod_pessoa? 

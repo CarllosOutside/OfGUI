@@ -13,6 +13,8 @@ import Form from 'react-bootstrap/Form';
 import { BiWindows } from "react-icons/bi";
 import moment from "moment-timezone";
 import CurrencyInput from 'react-currency-input';
+import Modal from 'react-bootstrap/Modal';
+import AddVeiculo from './AddVeiculo';
 const CadastroDeOrdemCalendario = (props) => {
 
 const navigate = useNavigate()
@@ -180,6 +182,75 @@ useEffect(()=>{
     };
 
 
+    //estado inicial de veiculo --> nenhum
+    const initialVeiculoState =
+  {
+      placa: "",
+      marca: "",
+      modelo: "",
+      ano: "",
+      cor: "",
+      codCliente: null,
+      cliente: null
+      }
+//veiculo ao qual se refere a placa    
+const [veic, setVeic] = useState(initialVeiculoState)
+const [veiculoSubmitted, setVeiculoSubmitted] = useState(false)
+
+//busca dono do veiculo ao buscar por placa
+    const busacprop = () =>{
+      VeiculoService.findByPlaca(ordem.placa)
+      .then(response => {
+        setVeic(response.data)
+      })
+      .catch(e => {
+        console.log(e);
+      });
+
+    }
+
+    //permite alterar veiculo
+    const handleChangeVeic = event => {
+      const { name, value } = event.target;
+      setVeic({ ...veic, [name]: value });
+      console.log(value)
+    };
+    //handle change codCliente que é o unico campo nao preenchido por uma form
+    useEffect(() => {
+      if(veic.cliente){
+      setVeic({ ...veic, codCliente: veic.cliente.cod_cliente });
+      }
+     }, [veic.cliente]); 
+
+    ///update de veiculo
+    const updateVeiculo = () =>{
+      var data = veic
+      //console.log(data)
+      VeiculoService.update(data.placa, data)
+      .then(response => {
+        setVeic({
+          placa: response.data.placa,
+          marca: response.data.marca,
+          modelo: response.data.modelo,
+          ano: response.data.ano,
+          cor: response.data.cor,
+          codCliente: response.data.codCliente,
+          cliente: response.data.cliente
+      });
+       // console.log(response);//imprime pessoa atualizada
+      })
+      .catch(e => {
+        console.log(e);
+      });
+      setVeiculoSubmitted(true)
+    };
+
+    const [showEdit, setShowEdit] = useState(false);
+  
+    const handleCloseEdit = () => {setShowEdit(false); setVeic(initialVeiculoState);
+    }
+    const handleShowEdit = () => setShowEdit(true);
+
   //Renderiza componente
   return (
     <div className="submit-form">
@@ -197,13 +268,13 @@ useEffect(()=>{
         : <></>}
 
            {/**container estado */}
-           <div style={{display:"flex", gap:"50rem",marginTop:"45px"}}>
+           <div style={{display:"flex", gap:"5rem",marginTop:"45px"}}>
            
            <div>
-           <label>Selecione um mecânico:</label>
+           <label>Selecione um colaborador:</label>
     <Dropdown isOpen={dropDown} toggle={toggleDrop}>
         <Dropdown.Toggle caret>
-         {(currentFuncionario.pessoa)? currentFuncionario.pessoa.nome: "Selecione funcionário"}
+         {(currentFuncionario.pessoa)? currentFuncionario.pessoa.nome: "Selecione colaborador"}
         </Dropdown.Toggle>
          <Dropdown.Menu container="body">
             {funcionarios &&
@@ -220,9 +291,9 @@ useEffect(()=>{
       </Dropdown>
     </div>
           
-    <div className="list row">
-      <label>Código do mecânico</label>
-    <input
+    <div>
+      <label>Código do colaborador</label><br/>
+    <input style={{width:"45px", backgroundColor:"transparent", border:"0px"}}
               type="number"
               id="codFuncionario"
               required
@@ -245,7 +316,33 @@ useEffect(()=>{
               onChange={handleInputChange}
               name="placa"
             />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={busacprop}
+            >
+              Buscar
+            </button>
           </div>
+          <div className="form-group">
+            <label>Proprietário</label>
+            <input
+              type="text"
+              className="form-control"
+              id="proprietario"
+              disabled
+              value={veic.cliente?veic.cliente.pessoa.nome:" "}
+              name="proprietario"
+            />
+          </div>
+          <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={handleShowEdit}
+              hidden = {veic.cliente==null}
+            >
+              Editar veículo
+            </button>
           <div className="form-group">
             <label>Data</label>
             <input
@@ -351,6 +448,27 @@ useEffect(()=>{
           <Toast.Body>A placa do veículo não foi encontrada</Toast.Body>
         </Toast>
         </ToastContainer>
+
+
+
+
+
+        <Modal show={showEdit} onHide={handleCloseEdit}>
+        <Modal.Header closeButton>
+          <Modal.Title>{"Editar veículo"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+         <AddVeiculo veiculo ={veic} handleInputChange = {handleChangeVeic} criado={true} submitted={veiculoSubmitted} setSubmitted={setVeiculoSubmitted}/>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseEdit}>
+            Voltar
+          </Button>
+          <Button variant="primary" onClick={updateVeiculo}>
+            Salvar
+          </Button> 
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

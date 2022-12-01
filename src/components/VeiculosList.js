@@ -298,7 +298,7 @@ const updateVeiculo = () =>{
         cor: response.data.cor,
         codCliente: response.data.codCliente,
         cliente: response.data.cliente
-    });
+    }); 
     retrieveVeiculos(props.codCliente);
       console.log(response);//imprime pessoa atualizada
     })

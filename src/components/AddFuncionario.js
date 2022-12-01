@@ -74,7 +74,7 @@ const getFuncionario = id => {
         <ToastContainer className="p-3" position={"bottom-center"}>
           <Toast show={submitted}>
             <Toast.Header closeButton={false}>
-              <strong className="me-auto">Funcionário salvo</strong>
+              <strong className="me-auto">Colaborador salvo</strong>
             </Toast.Header>
             <Toast.Body><ProgressBar animated now={progressCounter} /></Toast.Body>
           </Toast>

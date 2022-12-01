@@ -41,7 +41,7 @@ export default function App() {
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
             <Link to={"/funcionarios"} className="nav-link">
-              Funcionários
+              Colaboradores
             </Link>
           </li>
         </div>
