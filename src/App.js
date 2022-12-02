@@ -1,15 +1,16 @@
-import { ListComponent } from "./ListComponent";
+//import { ListComponent } from "./ListComponent";
 import "./styles.css";
 import React, { useState, useEffect } from "react";
-import { Cartao } from "./cartao";
+//import { Cartao } from "./cartao";
 import { Routes, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddCliente from "./components/AddCliente";
-import Cliente from "./components/Cliente";
+//import Cliente from "./components/Cliente";
 import ClienteList from "./components/ClienteList";
 import LocaisList from "./components/LocaisList";
 import Ordens from "./components/Ordens";
-import VeiculosList from "./components/VeiculosList";
+//import VeiculosList from "./components/VeiculosList";
+import Charts from "./components/Charts";
 import AddVeiculo from "./components/AddVeiculo";
 import AddFuncionario from "./components/AddFuncionario";
 import FuncionariosList from "./components/FuncionariosList";
@@ -45,6 +46,13 @@ export default function App() {
             </Link>
           </li>
         </div>
+        <div className="navbar-nav mr-auto">
+          <li className="nav-item">
+            <Link to={"/charts"} className="nav-link">
+              Relatórios
+            </Link>
+          </li>
+        </div>
       </nav>
 
       <div style={{paddingRight: 0, marginLeft:0}}>
@@ -63,6 +71,7 @@ export default function App() {
           <Route path="/funcionarios/edit/:id" element={<AddFuncionario/>} />
           <Route path="/locais" element={<LocaisList/>} />  
           <Route path="/clientes/edit/:id/addveiculo/:placa" element={<AddVeiculo/>} />
+          <Route path="/charts" element={<Charts/>} />
         </Routes>
       </div>
     </div>

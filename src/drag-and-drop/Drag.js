@@ -1,4 +1,6 @@
 import { Draggable } from "react-beautiful-dnd";
+import React, { Component }  from 'react';
+
 
 export const Drag = ({ id, index, ...props }) => {
   return (

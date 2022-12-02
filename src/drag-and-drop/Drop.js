@@ -1,5 +1,5 @@
 import { Droppable } from "react-beautiful-dnd";
-
+import React, { Component }  from 'react';
 export const Drop = ({ id, type, ...props }) => {
   return (
     <Droppable droppableId={id} type={type}>

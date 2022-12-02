@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { DragAndDrop, Drag, Drop } from "./drag-and-drop";
 import { reorder } from "./helpers.js";
 import { Cartao } from "./cartao";
 import moment from "moment-timezone";
 import OrdemService from "./Services/OrdemService";
-import Ordens from "./components/Ordens";
+//import Ordens from "./components/Ordens";
 import ServicoService from "./Services/ServicoService";
-export const ListComponent = (props) => {
+export const ListComponent = (props) => { //props é Ordens.js
   
 let mesAtual = moment.tz(props.dataAtual,"America/Sao_Paulo").format("MM");
 let anoAtual = moment.tz(props.dataAtual,"America/Sao_Paulo").format("yyy");
