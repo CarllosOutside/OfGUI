@@ -10,6 +10,8 @@ import Modal from 'react-bootstrap/Modal';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Calendar from 'react-calendar';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Dropdown from 'react-bootstrap/Dropdown';
+
 
 export const Charts=() => {
     const [dataPie, setDataPie] = useState([
@@ -32,7 +34,7 @@ export const Charts=() => {
    const dataAtual= useRef(new Date())
     let mesAtual = moment.tz(dataAtual.current,"America/Sao_Paulo").format("MM");
     let anoAtual = moment.tz(dataAtual.current,"America/Sao_Paulo").format("yyy");
-    
+
     //recarrega todas as ordens do corrente mes ao trocar a data
    useEffect(() => {
     abertas.current = 0;    //contabiliza ordens em aberto
@@ -132,6 +134,67 @@ export const Charts=() => {
         dataAtual.current=value
     }
 
+
+    //constantes da dropdown de colabboradores
+    //dropdown de funcionarios
+    const initialFunc = {codFuncionario: null}
+    const [funcionarios, setFuncionarios] = useState([])
+    const [currentFuncionario, setCurrentFuncionario] = useState(initialFunc)
+    const [dropDown, setDropDown] = useState(false)
+    const fvalorTotalMesPeca = useRef(0);
+    const fvalorTotalMesServico=  useRef(0);
+    const fvalorTotalMesPecaAberta = useRef(0);
+    const fvalorTotalMesServicoAberta =  useRef(0);
+    const fabertas = useRef(0);    //contabiliza ordens em aberto
+    const fqtdOrdens= useRef(0);  //contabiliza qtd de ordens
+    let [fcurrentOrdensList, setFcurrentOrdensList] = useState([]) //lista de ordens de um funcionario
+    //abre/fecha dropdown
+    const toggleDrop = () =>{
+        setDropDown(!dropDown)
+    }
+    //caso o mesmo funcionario seja slecionado
+    const faznada = () =>{}
+    //Atualiza lista de colaboradores mensais 
+    useEffect(()=>{
+        //funcionarios das ordens menais sao adicinados á lista funcionarios para imprimir no dorpdwon
+        currentOrdensList.forEach(ord=> //para cada ordem da lista mensal
+            {
+                console.log("Ordem na lista: ",ord)
+                //verifica se algum funcionario retorna verdadeiro quando tem seu codigo comparado com o funcinario da ordem        se sim, nao faz nada      senao, adiciona o func da ordem na lista
+                funcionarios.some(funcionario => funcionario.cod_funcionario == ord.funcionario.cod_funcionario)? faznada(): funcionarios.push(ord.funcionario)
+            })      
+      }
+        ,[currentOrdensList])
+    //Pega lista de ordens do funcionario ao selecionar funcionario
+    useEffect(()=>{
+        fabertas.current = 0;    //zera a qtd ordens do funcionario abertas
+        fqtdOrdens.current= 0;
+        fvalorTotalMesPeca.current = 0;
+        fvalorTotalMesServico.current=  0;
+        fvalorTotalMesPecaAberta.current = 0;
+        fvalorTotalMesServicoAberta.current =  0;
+        retrieveOrdensFunc()
+        }
+        ,[currentFuncionario,currentOrdensList]) 
+    //Pega lista de ordens mensais do funcionario selecionado e computa valores
+    const retrieveOrdensFunc = () =>{
+        currentOrdensList.forEach(ord=> //para cada ordem da lista mensal
+            {
+                //se o func selecionado tem o mesmo codFuncionario da ordem
+                if(currentFuncionario.cod_funcionario == ord.codFuncionario){
+                    fqtdOrdens.current = fqtdOrdens.current + 1; //incrementa qtd de ordens
+                    if(ord.aberto){//se estiver aberta, incrementa qtd de ordens abertas e valores de ordens abertas
+                        fabertas.current = fabertas.current + 1;
+                        fvalorTotalMesPecaAberta.current = fvalorTotalMesPecaAberta.current + ord.valorTotalPecas;
+                        fvalorTotalMesServicoAberta.current =  fvalorTotalMesServicoAberta.current + ord.valorTotalServicos;
+                        } 
+                    //incrementa valores totais
+                    fvalorTotalMesPeca.current = fvalorTotalMesPeca.current + ord.valorTotalPecas;
+                    fvalorTotalMesServico.current=  fvalorTotalMesServico.current+ord.valorTotalServicos;
+                }
+            })  
+            setFcurrentOrdensList([]) //apenas um set, depois de ter executado todos os calculos
+    }
     //Render
     return (
         <div>
@@ -175,7 +238,7 @@ export const Charts=() => {
         </ResponsiveContainer>
         </div> 
         <div style={{marginTop:"90px"}}>  
-        <table className="table">
+        <table className="table" style={{textAlign:"center"}}>
             <thead>
                 <tr>
                 <th scope="col">#</th>
@@ -224,6 +287,63 @@ export const Charts=() => {
             tileDisabled={({ view, date }) => ((date.getDay() == 0|| date.getDay() == 6) //desativa sabados e domingos
              && view=='month')}/></Modal.Body>
       </Modal>
+
+      <div style={{marginTop:"90px", marginLeft:"80px"}}>
+        <label>Selecione um colaborador:</label>
+        <Dropdown isOpen={dropDown} toggle={toggleDrop}>
+            <Dropdown.Toggle caret>
+            {(currentFuncionario.pessoa)? currentFuncionario.pessoa.nome: "Selecione colaborador"}
+            </Dropdown.Toggle>
+            <Dropdown.Menu container="body">
+                {funcionarios &&
+                funcionarios.map((func, index) => (
+                <Dropdown.Item
+                    onClick={func!=currentFuncionario?() => setCurrentFuncionario(func): ()=>faznada}
+                    key={index}
+                    name="codFuncionario"
+                >
+                    {func.pessoa.nome}
+                </Dropdown.Item>
+                ))}
+            </Dropdown.Menu>
+        </Dropdown>
+    </div>
+    {currentFuncionario.cod_funcionario!=null? <div>
+        <table className="table" style={{textAlign:"center"}}>
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Quantidade</th>
+                <th scope="col">$ Peças</th>
+                <th scope="col">$ Mão de obra</th>
+                <th scope="col">$ Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>Abertas</td>
+                <td>{fabertas.current}</td>
+                <td>{fvalorTotalMesPecaAberta.current}</td>
+                <td>{fvalorTotalMesServicoAberta.current}</td>
+                <td>{fvalorTotalMesPecaAberta.current+fvalorTotalMesServicoAberta.current}</td>
+                </tr>
+                <tr>
+                <td>Fechadas</td> 
+                <td>{fqtdOrdens.current-fabertas.current}</td>
+                <td>{fvalorTotalMesPeca.current-fvalorTotalMesPecaAberta.current}</td>
+                <td>{fvalorTotalMesServico.current-fvalorTotalMesServicoAberta.current}</td>
+                <td>{fvalorTotalMesPeca.current+fvalorTotalMesServico.current -fvalorTotalMesPecaAberta.current-fvalorTotalMesServicoAberta.current}</td>
+                </tr>
+                <tr>
+                <td>Total</td>
+                <td>{fqtdOrdens.current}</td>
+                <td>{fvalorTotalMesPeca.current}</td>
+                <td>{fvalorTotalMesServico.current}</td>
+                <td>{fvalorTotalMesPeca.current+fvalorTotalMesServico.current}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>: ""}
   </div>
 );};
 export default Charts 

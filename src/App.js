@@ -49,7 +49,7 @@ export default function App() {
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
             <Link to={"/charts"} className="nav-link">
-              Relatórios
+              Relatório mensal
             </Link>
           </li>
         </div>

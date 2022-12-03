@@ -4,6 +4,10 @@ const get = id => {
   return http.get(`/ordens/${id}`);
 };
 
+const findByCodFuncionario = codFuncionario => {
+  return http.get(`/ordens/lista/f/${codFuncionario}`); 
+};
+
 const findByPlaca = (placa, params) => {
     return http.get(`ordens/veiculo/${placa}?page=${params.page}&size=${params.size}`);
   };
@@ -12,8 +16,8 @@ const findByPlaca = (placa, params) => {
     return http.get(`/ordens/${ano}/${mes}`)
   };
 
-  const findByFuncionario = (codFuncionario, params) => {
-    return http.get(`/ordens/fucionario/${codFuncionario}`, params);
+  const findByFuncionario = (params) => { 
+    return http.get(`/ordens/fucionario`, params);
   };
 
 const create = (codFuncionario, placa, dataA) => {
@@ -36,6 +40,7 @@ const OrdemService = {
   remove,
   findByPlaca,
   findByFuncionario,
+  findByCodFuncionario,
   findByAnoMes,
   update
 };
