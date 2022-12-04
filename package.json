@@ -1,5 +1,5 @@
 {
-  "homepage": "https://carllosoutside.github.io/OfGUI",
+  "homepage": "OfGUI/",
   "name": "oficina-mecanica-gui",
   "version": "0.1.0",
   "main": "server.js",
