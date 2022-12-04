@@ -111,10 +111,16 @@ useEffect(()=>{
 
   //Tenta salvar a ordem preenchida
   const salvaOrdem = () =>{
+    //so permite salvar se nao for sabado ou domingo
+  if(moment.tz(ordem.dataAbertura,"America/Sao_Paulo").format("d")!=6 && moment.tz(ordem.dataAbertura,"America/Sao_Paulo").format("d")!=0)
     //primeiro verifica se a placa esta cadastrada
     VeiculoService.findByPlaca(ordem.placa)
     .then(response =>{
-      return response.data.placa
+      console.log(response.data.cliente)
+      if(response.data.cliente.cAtivo)
+        return response.data.placa
+      else
+        alert("Cliente inativo!")  
     }) //depois cadastra a ordem usando a placa
     .then( placa =>{
       OrdemService.create(currentFuncionario.cod_funcionario, placa, ordem.dataAbertura)
@@ -143,6 +149,8 @@ useEffect(()=>{
       console.log(e);
       setNfoundPlaca(true)
     });
+    else
+      alert("Ordens não podem ser criadas nos sábados e domingos")
   }
 
  //Faz update da ordem preenchida

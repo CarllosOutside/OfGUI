@@ -5,11 +5,11 @@ import Pagination from "@material-ui/lab/Pagination";
 import { useTable } from "react-table";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPenToSquare, faTrashCan, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrashCan, faPlus, faPowerOff, faUserSlash, faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-library.add(faPenToSquare, faTrashCan, faPlus);
+library.add(faPenToSquare, faTrashCan, faPlus,faPowerOff,faUserSlash,faEyeSlash,faEye);
 
 const ClienteList = (props) => {
     const navigate = useNavigate();
@@ -118,7 +118,10 @@ const telaCadastro = ()=>{
 }
   const openCliente = (rowIndex) => {
     const id = clientesRef.current[rowIndex].cod_cliente;
-    navigate("/clientes/edit/" + id);
+    if(clientesRef.current[rowIndex].cAtivo)
+      navigate("/clientes/edit/" + id);
+    else
+      alert("Cliente inativo")  
   };
 
   //DEFINICAO TABELA
@@ -139,12 +142,12 @@ const telaCadastro = ()=>{
       {
         Header: " ",
         accessor: "actions",
-        Cell: (props) => {
-          const rowIdx = props.row.id; //recebe o props de um elemento -> recebe o indice da linha
+        Cell: (props) => { //gera varias linhas
+          const rowIdx = props.row.id; //recebe o props de um elemento -> recebe o indice da linha que ta sendo gerada, é gerada uma linha pra cada cliente da lista clientesRef
           return (
             <div className="row" align="center">
             <div className="col-sm">
-              <span onClick={() => openCliente(rowIdx)}> {/**rowIdx é o indice do cliente na lista clientes */}
+              <span onClick={() => openCliente(rowIdx)}> {/**rowIdx é o indice do cliente clicado na lista clientes */}
               <OverlayTrigger
                       key={"ed"}
                       delay={{hide: 5 }}
@@ -160,17 +163,17 @@ const telaCadastro = ()=>{
               </span>
             </div>
             <div className="col-sm">
-              <span onClick={() => deleteCliente(rowIdx)}>
+              <span onClick={() => deleteCliente(rowIdx)}> 
                   <OverlayTrigger
                   delay={{hide: 5 }}
                       key={"del"}
                       placement={"top"}
                        overlay={
                           <Tooltip id={`tooltip-${"del"}`}>
-                            <strong>{"deletar cliente"}</strong>.
+                            <strong>{clientesRef.current[rowIdx].cAtivo? "Desativar cliente":"Reativar cliente"}</strong>.{/**acessando cliente da linha rowIdx*/}
                           </Tooltip>
                         }>  
-                      <FontAwesomeIcon icon="fa-solid fa-trash-can" />
+                      <FontAwesomeIcon icon={clientesRef.current[rowIdx].cAtivo?"fa-solid fa-power-off":"fa-solid fa-user-slash"} />
                     </OverlayTrigger>
               
               </span>
@@ -207,8 +210,15 @@ const telaCadastro = ()=>{
     prepareRow,
   } = useTable({ //tabela usada
     columns, //colunas definidas acima
-    data: clientes, //dados com acessor
+    data: clientes, //dados com acessor, sera gerada uma linha pra cada cliente da lista
   });
+
+
+  //constantes que mostram ou nao usuario inativo
+  const [showInativos, setShowInativos] = useState(false)
+  const onclickEye = () =>{
+    setShowInativos(!showInativos)
+  }
 
   return (
     <div className="list row" style={{paddingLeft:"50px", paddingTop:"30px",width:"95%"}}>
@@ -258,6 +268,21 @@ const telaCadastro = ()=>{
             shape="rounded"
             onChange={handlePageChange} //altera a pagina(indice) e dispara nova busca na api
           /></div>
+          <div style={{flex:"20%", marginTop:"15px"}}>
+          <span onClick={() => onclickEye()}>
+          <OverlayTrigger
+          delay={{hide: 5 }}
+              key={"del"}
+              placement={"top"}
+                overlay={
+                  <Tooltip id={`tooltip-${"del"}`}>
+                    <strong>{showInativos? "Ocultar clientes inativos":"Mostrar clientes inativos"}</strong>.{/**acessando cliente da linha rowIdx*/}
+                  </Tooltip>
+                }>  
+            <FontAwesomeIcon icon={showInativos?"fa-solid fa-eye":"fa-solid fa-eye-slash"} />
+          </OverlayTrigger>
+          </span>
+          </div>
           <div style={{flex:"20%"}}>
           <button onClick={telaCadastro} className="btn btn-primary" style={{height:"auto"}}>Cadastrar cliente</button>
           </div>
@@ -279,7 +304,18 @@ const telaCadastro = ()=>{
           </thead>
           <tbody {...getTableBodyProps()}> {/**pega props do corpo gerado */}
             {rows.map((row, i) => { //cada row recebe indice(a lista clientes tem indices)
-              prepareRow(row);
+              prepareRow(row); {console.log(row)}
+              if(row.original.cAtivo) //se o cliente tiver ativo, imprime a sua linha(table row) com celulas dentro
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+              else if(showInativos)//se não... apenas imprime se showInativos estiver true
               return (
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => {

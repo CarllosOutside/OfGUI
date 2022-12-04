@@ -269,8 +269,9 @@ const [ajuste, setAjuste] = useState(false)
     //dados com acessor
   });
   
-  const saveOrdem= () => {
+  const saveOrdem= () => { 
     //faz o Post
+  if(moment.tz(ordem.dataAbertura,"America/Sao_Paulo").format("d")!=6 && moment.tz(ordem.dataAbertura,"America/Sao_Paulo").format("d")!=0)
     OrdemService.create(ordem.codFuncionario,props.veiculo.placa, ordem.dataAbertura) 
       .then(response => {
         setOrdem({
@@ -292,7 +293,10 @@ const [ajuste, setAjuste] = useState(false)
       .catch(e => {
         console.log(e);
         alert("Um funcionário deve ser selecionado")
-      });   
+      }); 
+      else
+        alert("Ordens não podem ser criadas nos sábados e domingos") 
+
   };
 const updateOrdem = () =>{
   console.log(ordem)

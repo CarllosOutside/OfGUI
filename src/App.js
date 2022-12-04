@@ -14,6 +14,7 @@ import Charts from "./components/Charts";
 import AddVeiculo from "./components/AddVeiculo";
 import AddFuncionario from "./components/AddFuncionario";
 import FuncionariosList from "./components/FuncionariosList";
+import "./index.css"
 
 export default function App() {
   return (
@@ -51,6 +52,13 @@ export default function App() {
             <Link to={"/charts"} className="nav-link">
               Relatório mensal
             </Link>
+          </li>
+        </div>
+        <div className="navbar-nav mr-auto" style={{marginLeft:"10px"}}>
+          <li className="nav-item">
+          <a href="https://carllosoutside.github.io/GesmaAjuda/" target="_blank" rel="noopener noreferrer">
+           Ajuda
+           </a>
           </li>
         </div>
       </nav>
