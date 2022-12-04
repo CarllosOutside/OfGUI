@@ -1,7 +1,7 @@
 {
   "main.css": "/OfGUI/static/css/main.c7eb6521.chunk.css",
-  "main.js": "/OfGUI/static/js/main.16f56cf5.chunk.js",
-  "main.js.map": "/OfGUI/static/js/main.16f56cf5.chunk.js.map",
+  "main.js": "/OfGUI/static/js/main.681994e5.chunk.js",
+  "main.js.map": "/OfGUI/static/js/main.681994e5.chunk.js.map",
   "static/js/1.e9cf3b80.chunk.js": "/OfGUI/static/js/1.e9cf3b80.chunk.js",
   "static/js/1.e9cf3b80.chunk.js.map": "/OfGUI/static/js/1.e9cf3b80.chunk.js.map",
   "static/css/2.7fa64263.chunk.css": "/OfGUI/static/css/2.7fa64263.chunk.css",
@@ -12,6 +12,6 @@
   "static/css/2.7fa64263.chunk.css.map": "/OfGUI/static/css/2.7fa64263.chunk.css.map",
   "static/css/main.c7eb6521.chunk.css.map": "/OfGUI/static/css/main.c7eb6521.chunk.css.map",
   "index.html": "/OfGUI/index.html",
-  "precache-manifest.792ef70f7653dfced3096748ab735d86.js": "/OfGUI/precache-manifest.792ef70f7653dfced3096748ab735d86.js",
+  "precache-manifest.c3e418652c67fdcf4e01df916aa1ff77.js": "/OfGUI/precache-manifest.c3e418652c67fdcf4e01df916aa1ff77.js",
   "service-worker.js": "/OfGUI/service-worker.js"
 }
